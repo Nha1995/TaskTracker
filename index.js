@@ -4,8 +4,10 @@ const form = document.querySelector('.form');
 const xLogo = document.querySelector('.x-logo');
 const sortIcon = document.querySelector('.sort-icon');
 let sortTracker;
+let dragElement;
 
 dragOparaition(form);
+DragTrueOrFalse(form);
 
 button.addEventListener('click', () => {
     let formElem = form.cloneNode(true);
@@ -14,6 +16,7 @@ button.addEventListener('click', () => {
     let xLogo = formElem.querySelector('.x-logo');
     removeField(xLogo);
     dragOparaition(formElem);
+    DragTrueOrFalse(formElem);
 });
 removeField(xLogo);
 sortIcon.addEventListener('click', sortUpAndDown);
@@ -24,6 +27,12 @@ function removeField(xLogoButton) {
         formParentElement.remove(); 
     });
 };
+
+function DragTrueOrFalse(item) {
+    item.children[0].addEventListener('mousedown', event => {
+        item.draggable = true;
+    });
+}
 
 function sortUpAndDown() {
 
@@ -74,9 +83,10 @@ function sortUpAndDown() {
     containerFields.append(...newArr);
 };
 
-function dragOparaition(item) {
-    let dragElement;
+function dragOparaition(item) {    
     item.addEventListener('dragstart', (event) => {
+        console.log(event.target); 
+        console.log(item.children[0]);        
         dragElement = event.target;
         dragElement.style.backgroundColor = '#c3c3c3';
         dragElement.children[1].style.backgroundColor = '#c3c3c3';
@@ -84,37 +94,38 @@ function dragOparaition(item) {
         dragElement.querySelector('.dotes-icon-svg').style.fill = '#FFFFFF';
         dragElement.querySelector('.x-logo-svg').style.fill = '#c3c3c3';
         dragElement.querySelector('.x-logo-svg').style.stroke = '#FFFFFF';
-    })
+    });
 
     item.addEventListener('dragend', (event) => {
-        dragElement.style.backgroundColor = 'unset'
-        dragElement.children[1].style.backgroundColor = 'unset'
+        dragElement.style.backgroundColor = 'unset';
+        dragElement.children[1].style.backgroundColor = 'unset';
         dragElement.children[1].style.color = 'black';
         dragElement.querySelector('.dotes-icon-svg').style.fill = '#c3c3c3';
         dragElement.querySelector('.x-logo-svg').style.fill = '#FFFFFF';
         dragElement.querySelector('.x-logo-svg').style.stroke = '#c3c3c3';
-        hoverFunction(dragElement);        
+        hoverFunction(dragElement);
         dragElement = null;
-    })
-
-    containerFields.addEventListener('dragenter', (event) => {
-        event.target.parentElement.style['border-top'] = 'solid 3px blueviolet';
-        event.preventDefault();
-    })
-
-    containerFields.addEventListener('dragover', (event) => {
-        event.preventDefault();
-    })
-
-    containerFields.addEventListener('dragleave', (event) => {
-    event.target.parentElement.style['border-top'] = '';
-    })
-
-    containerFields.addEventListener('drop', (event) => {
-        event.target.parentElement.style['border-top'] = '';
-        containerFields.insertBefore(dragElement, event.target.parentElement);
     });
 }
+
+containerFields.addEventListener('dragenter', (event) => {
+    event.target.parentElement.style['border-top'] = 'solid 3px blueviolet';
+    event.preventDefault();
+});
+
+containerFields.addEventListener('dragover', (event) => {
+    event.preventDefault();
+});
+
+containerFields.addEventListener('dragleave', (event) => {
+event.target.parentElement.style['border-top'] = '';
+});
+
+containerFields.addEventListener('drop', (event) => {
+    event.target.parentElement.style['border-top'] = '';
+    containerFields.insertBefore(dragElement, event.target.parentElement);
+    dragElement.draggable = false ;
+});
 
 function hoverFunction (form) {
     form.addEventListener('mouseover', (event) => {
@@ -127,4 +138,4 @@ function hoverFunction (form) {
         form.style.backgroundColor = '#FFFFFF';
         form.children[2].children[0].style.fill = '#FFFFFF';
     });
-}
+};
