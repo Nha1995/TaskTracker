@@ -6,9 +6,6 @@ const sortIcon = document.querySelector('.sort-icon');
 let sortTracker;
 let dragElement;
 
-dragOparaition(form);
-DragTrueOrFalse(form);
-
 button.addEventListener('click', () => {
     let formElem = form.cloneNode(true);
     formElem.children[1].value ='';
@@ -16,10 +13,8 @@ button.addEventListener('click', () => {
     let xLogo = formElem.querySelector('.x-logo');
     removeField(xLogo);
     dragOparaition(formElem);
-    DragTrueOrFalse(formElem);
+    dragTrueOrFalse(formElem);
 });
-removeField(xLogo);
-sortIcon.addEventListener('click', sortUpAndDown);
 
 function removeField(xLogoButton) {    
     xLogoButton.addEventListener('click', () => {
@@ -28,11 +23,11 @@ function removeField(xLogoButton) {
     });
 };
 
-function DragTrueOrFalse(item) {
+function dragTrueOrFalse(item) {
     item.children[0].addEventListener('mousedown', event => {
         item.draggable = true;
     });
-}
+};
 
 function sortUpAndDown() {
 
@@ -106,7 +101,20 @@ function dragOparaition(item) {
         hoverFunction(dragElement);
         dragElement = null;
     });
-}
+};
+
+function hoverFunction (form) {
+    form.addEventListener('mouseover', (event) => {
+        form.style.backgroundColor = '#FFDC40';
+        form.children[1].style.backgroundColor = '#FFDC40';
+        form.children[2].children[0].style.fill = '#FFDC40';
+    });
+    form.addEventListener('mouseout', (event) => {
+        form.children[1].style.backgroundColor = '#FFFFFF';
+        form.style.backgroundColor = '#FFFFFF';
+        form.children[2].children[0].style.fill = '#FFFFFF';
+    });
+};
 
 containerFields.addEventListener('dragenter', (event) => {
     event.target.parentElement.style['border-top'] = 'solid 3px blueviolet';
@@ -127,15 +135,7 @@ containerFields.addEventListener('drop', (event) => {
     dragElement.draggable = false ;
 });
 
-function hoverFunction (form) {
-    form.addEventListener('mouseover', (event) => {
-        form.style.backgroundColor = '#FFDC40';
-        form.children[1].style.backgroundColor = '#FFDC40';
-        form.children[2].children[0].style.fill = '#FFDC40';
-    });
-    form.addEventListener('mouseout', (event) => {
-        form.children[1].style.backgroundColor = '#FFFFFF';
-        form.style.backgroundColor = '#FFFFFF';
-        form.children[2].children[0].style.fill = '#FFFFFF';
-    });
-};
+dragOparaition(form);
+dragTrueOrFalse(form);
+removeField(xLogo);
+sortIcon.addEventListener('click', sortUpAndDown);
